@@ -1,0 +1,53 @@
+services:
+
+  hr-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: hr-agent
+
+    ports:
+      - "8000:8000"
+
+    environment:
+      MODEL: "ollama_chat/qwen3:8b"
+      EMBEDDING_MODEL: "nomic-embed-text"
+
+      OLLAMA_HOST: "http://ollama:11434"
+      QDRANT_URL: "http://qdrant:6333"
+
+      COMPANY_NAME: "LALA Company"
+
+    depends_on:
+      - ollama
+      - qdrant
+
+
+  ollama:
+    image: ollama/ollama:latest
+
+    container_name: ollama
+
+    ports:
+      - "11434:11434"
+
+    volumes:
+      - ollama_data:/root/.ollama
+
+
+  qdrant:
+    image: qdrant/qdrant:latest
+
+    container_name: qdrant
+
+    ports:
+      - "6333:6333"
+
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+
+volumes:
+  ollama_data:
+  qdrant_data:
