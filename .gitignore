@@ -15,3 +15,5 @@ adk/
 
 # OS specific files
 .DS_Store
+
+.docx
